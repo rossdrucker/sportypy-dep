@@ -22,17 +22,18 @@ def reflect(df, over_x = False, over_y = True):
     -------
     out: the reflected pandas dataframe
     """
-    # Make a copy of the original dataframe
+    # Make a copy of the original dataframe on which to operate
     reflected = df.copy()
+    
+    # If a reflection over the x axis is required, perform it
     if over_y:
-        # If a reflection over the x axis is required, perform it
         reflected = pd.DataFrame({
             'x': -1 * reflected['x'],
             'y': reflected['y']
         })
         
+    # If a reflection over the y axis is required, perform it
     if over_x:
-        # If a reflection over the y axis is required, perform it
         reflected = pd.DataFrame({
             'x': reflected['x'],
             'y': -1 * reflected['y']
@@ -60,8 +61,11 @@ def rotate(df, rotation_dir = 'ccw', angle = .5):
     # If the rotation direction is clockwise, take the negative of the angle
     if rotation_dir.lower() not in ['ccw', 'counter', 'counterclockwise']:
         angle *= -1
-        
+    
+    # Set theta to be the angle of rotation
     theta = angle * np.pi
+    
+    # Make a copy of the original dataframe on which to operate
     rotated = df.copy()
     rotated['x'] = (df['x'] * math.cos(theta)) - (df['y'] * math.sin(theta))
     rotated['y'] = (df['x'] * math.sin(theta)) + (df['y'] * math.cos(theta))
@@ -84,9 +88,21 @@ def translate(df, translate_x = 0, translate_y = 0):
     -------
     translated: the translated dataframe
     """
+    # Make a copy of the original dataframe on which to operate
     translated = df.copy()
     
+    # Translate the x and y coordinates
     translated['x'] = translated['x'] + translate_x
     translated['y'] = translated['y'] + translate_y
     
     return translated
+
+def scale(df, scale_factor = 1):
+    # Make a copy of the original dataframe on which to operate
+    scaled = df.copy()
+    
+    # Scale the x and y coordinates
+    scaled['x'] = scale_factor * scaled['x']
+    scaled['y'] = scale_factor * scaled['y']
+    
+    return scaled
