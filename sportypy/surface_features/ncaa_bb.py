@@ -10,10 +10,17 @@ import pandas as pd
 from helper.coordinate_ops import create_shapes as create
 from helper.coordinate_ops import transformations as transform
 
-def center_circle(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def center_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the center circle as
     specified in Rule 1, Section 4, Article 1 of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -46,7 +53,7 @@ def center_circle(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         center_circle = center_circle.append(
             transform.reflect(center_circle, over_y = True)
         )
@@ -60,12 +67,19 @@ def center_circle(full_court = True, rotate = False, rotation_dir = 'ccw'):
             
     return center_circle
 
-def division_line(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def division_line(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of
     the division line as specified in Rule 1, Section 5, Article 1 of the NCAA
     rule book
-
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+    
     Returns
     -------
     division_line: A pandas dataframe of the interior boundaries of the court
@@ -78,7 +92,7 @@ def division_line(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         division_line = division_line.append(
             transform.reflect(division_line, over_y = True)
         )
@@ -92,12 +106,19 @@ def division_line(full_court = True, rotate = False, rotation_dir = 'ccw'):
     
     return division_line
 
-def endlines_sidelines(full_court = True, rotate = False,
+def endlines_sidelines(full_surf = True, rotate = False,
                            rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     end lines and sidelines as specified in Rule 1, Section 3, Article 2 of
     the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -132,7 +153,7 @@ def endlines_sidelines(full_court = True, rotate = False,
     })
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         endline_sideline = endline_sideline.append(
             transform.reflect(endline_sideline, over_y = True)
         )
@@ -146,7 +167,7 @@ def endlines_sidelines(full_court = True, rotate = False,
     
     return endline_sideline
 
-def lower_defensive_box_ticks(full_court = True, rotate = False,
+def lower_defensive_box_ticks(full_surf = True, rotate = False,
                               rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
@@ -154,6 +175,13 @@ def lower_defensive_box_ticks(full_court = True, rotate = False,
     of the NCAA rule book (women's only). While it only pertains to women's
     basketball, universities typically only have one court for both teams, so
     this marking appears on the men's floor as well
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
     
     Returns
     -------
@@ -167,7 +195,7 @@ def lower_defensive_box_ticks(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         lower_defensive_box_tick = lower_defensive_box_tick.append(
             transform.reflect(lower_defensive_box_tick, over_y = True)
         )
@@ -181,10 +209,17 @@ def lower_defensive_box_ticks(full_court = True, rotate = False,
     
     return lower_defensive_box_tick
 
-def court_border(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def court_border(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     court border as specified in the court diagram of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -220,7 +255,7 @@ def court_border(full_court = True, rotate = False, rotation_dir = 'ccw'):
     })
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         court_border = court_border.append(
             transform.reflect(court_border, over_y = True)
         )
@@ -234,13 +269,20 @@ def court_border(full_court = True, rotate = False, rotation_dir = 'ccw'):
     
     return court_border
 
-def coaching_boxes(full_court = True, rotate = False,
-                       rotation_dir = 'ccw'):
+def coaching_boxes(full_surf = True, rotate = False,
+                   rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     coaching boxes as specified in Rule 1, Section 9, Articles 1 and 2 of the
     NCAA rule book
-
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+    
     Returns
     -------
     coaching_boxes: a pandas dataframe of the sidelines
@@ -254,7 +296,7 @@ def coaching_boxes(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         coaching_box = coaching_box.append(
             transform.reflect(coaching_box, over_y = True)
         )
@@ -268,11 +310,18 @@ def coaching_boxes(full_court = True, rotate = False,
     
     return coaching_box
 
-def bench_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def bench_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the team bench areas
     as specified on the court diagram in the NCAA rule book
-
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+    
     Returns
     -------
     bench_areas: a pandas dataframe of the team bench areas
@@ -285,7 +334,7 @@ def bench_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         bench_area = bench_area.append(
             transform.reflect(bench_area, over_y = True)
         )
@@ -298,12 +347,19 @@ def bench_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
     
     return bench_area
 
-def free_throw_lanes(full_court = True, rotate = False,
-                         rotation_dir = 'ccw'):
+def free_throw_lanes(full_surf = True, rotate = False,
+                     rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     free throw lane as specified in Rule 1, Section 6, Articles 1, 2, 3, and 4
     of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -456,7 +512,7 @@ def free_throw_lanes(full_court = True, rotate = False,
     })
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         free_throw_lane = free_throw_lane.append(
             transform.reflect(free_throw_lane, over_y = True)
         )
@@ -470,11 +526,18 @@ def free_throw_lanes(full_court = True, rotate = False,
     
     return free_throw_lane
 
-def painted_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def painted_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     free throw lane as specified in Rule 1, Section 6, Articles 1, 2, 3, and 4
     of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
     
     Returns
     -------
@@ -489,7 +552,7 @@ def painted_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         painted_area = painted_area.append(
             transform.reflect(painted_area, over_y = True)
         )
@@ -503,11 +566,18 @@ def painted_areas(full_court = True, rotate = False, rotation_dir = 'ccw'):
     
     return painted_area
     
-def restricted_area_arcs(full_court = True, rotate = False,
-                             rotation_dir = 'ccw'):
+def restricted_area_arcs(full_surf = True, rotate = False,
+                         rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the restricted-area
     arcs as specified in Rule 1, Section 8 of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -546,7 +616,7 @@ def restricted_area_arcs(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         restricted_area_arc = restricted_area_arc.append(
             transform.reflect(restricted_area_arc, over_y = True)
         )
@@ -560,14 +630,21 @@ def restricted_area_arcs(full_court = True, rotate = False,
         
     return restricted_area_arc
     
-def m_three_pt_lines(full_court = True, rotate = False,
-                         rotation_dir = 'ccw'):
+def m_three_pt_lines(full_surf = True, rotate = False,
+                     rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the three-point line
     as specified in Rule 1, Section 7 of the NCAA rule book. These points are
     the men's three-point line after being moved back prior to the 2019-2020
     season
-
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+    
     Returns
     -------
     m_three_pt_lines: a pandas dataframe of the three-point line
@@ -650,7 +727,7 @@ def m_three_pt_lines(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         m_three_pt_line = m_three_pt_line.append(
             transform.reflect(m_three_pt_line, over_y = True)
         )
@@ -664,8 +741,8 @@ def m_three_pt_lines(full_court = True, rotate = False,
     
     return m_three_pt_line
 
-def w_three_pt_lines(full_court = True, rotate = False,
-                         rotation_dir = 'ccw'):
+def w_three_pt_lines(full_surf = True, rotate = False,
+                     rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the three-point line
     as specified in Rule 1, Section 7 of the NCAA rule book. These points are
@@ -709,7 +786,7 @@ def w_three_pt_lines(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         w_three_pt_line = w_three_pt_line.append(
             transform.reflect(w_three_pt_line, over_y = True)
         )
@@ -723,11 +800,18 @@ def w_three_pt_lines(full_court = True, rotate = False,
     
     return w_three_pt_line
 
-def free_throw_circles(full_court = True, rotate = False,
-                           rotation_dir = 'ccw'):
+def free_throw_circles(full_surf = True, rotate = False,
+                       rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the free-throw circles
     as specified on the court diagram in the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -760,7 +844,7 @@ def free_throw_circles(full_court = True, rotate = False,
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         free_throw_circle = free_throw_circle.append(
             transform.reflect(free_throw_circle, over_y = True)
         )
@@ -774,7 +858,7 @@ def free_throw_circles(full_court = True, rotate = False,
     
     return free_throw_circle
 
-def backboards(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def backboards(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the backboard as
     specified in Rule 1, Section 10, Article 2 of the NCAA rule book
@@ -792,7 +876,7 @@ def backboards(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         backboard = backboard.append(
             transform.reflect(backboard, over_y = True)
         )
@@ -806,11 +890,18 @@ def backboards(full_court = True, rotate = False, rotation_dir = 'ccw'):
         
     return backboard
 
-def goals(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def goals(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the goals as specified
     in Rule 1, Sections 14 and 15 of the NCAA rule book
-
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+    
     Returns
     -------
     goals: a pandas dataframe of the goals
@@ -858,7 +949,7 @@ def goals(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         goal = goal.append(
             transform.reflect(goal, over_y = True)
         )
@@ -872,10 +963,17 @@ def goals(full_court = True, rotate = False, rotation_dir = 'ccw'):
         
     return goal
 
-def nets(full_court = True, rotate = False, rotation_dir = 'ccw'):
+def nets(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the rings as specified
     in Rule 1, Section 14, Article 2 of the NCAA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
 
     Returns
     -------
@@ -890,7 +988,7 @@ def nets(full_court = True, rotate = False, rotation_dir = 'ccw'):
     )
     
     # Reflect the x coordinates over the y axis
-    if full_court:
+    if full_surf:
         net = net.append(
             transform.reflect(net, over_y = True)
         )
