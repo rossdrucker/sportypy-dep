@@ -4,17 +4,35 @@ This repository contains code necessary to draw scale versions of playing surfac
 
 ## References
 
+### MLB
+
+- [MLB Rule Book](rule_books/mlb.pdf)
+
+### NBA
+
+- [NBA Rule Book](rule_books/nba.pdf)
+
 ### NCAA
 
-- [NCAA Men's Basketball](http://www.ncaapublications.com/productdownloads/BR21.pdf)
+- [NCAA Men's Basketball Rule Book](rule_books/ncaa_mbb.pdf)
 
-- [NCAA Women's Basketball](http://www.ncaapublications.com/productdownloads/WBR20.pdf)
+- [NCAA Women's Basketball Rule Book](rule_books/ncaa_wbb.pdf)
 
-- [NCAA Court Diagram](https://ncaaorg.s3.amazonaws.com/championships/sports/basketball/rules/common/PRXBB_CourtDiagram.pdf)
+- [NCAA Football](rule_books/ncaa_f.pdf)
+
+- [NCAA Volleyball](rule_books/ncaa_vb.pdf)
 
 ### NHL
 
-- [NHL Rule Book](https://cms.nhl.bamgrid.com/images/assets/binary/319997074/binary-file/file.pdf)
+- [NHL Rule Book](rule_books/nhl.pdf)
+
+### NFL
+
+- [NFL Rule Book](rule_books/nfl.pdf)
+
+### WNBA
+
+- [WNBA Rule Book](rule_books/wnba.pdf)
 
 ## Author
 
