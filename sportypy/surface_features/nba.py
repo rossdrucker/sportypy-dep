@@ -162,7 +162,7 @@ def division_line(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     
     return division_line
 
-def endlines_sideline(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def endline_sideline(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     end lines, sidelines, hash marks, and substitution areas as in the court
@@ -457,30 +457,48 @@ def free_throw_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
         x is a number that corresponds to a dashed section of the free throw
         circle
     """
+    # Per the NBA rule book, the solid portion of the circle extends along an
+    # arc of length 12.29" behind the free-throw line. The angle theta must be
+    # calculated to determine where to start. It can be determined via the
+    # relationship s = r*theta, where s is the arc length, r is the radius, and
+    # theta is the angle (in radians)
+    
+    # First, define s to be the arc length in feet
+    s = 12.29 / 12
+    
+    # The outer radius is 6'
+    r = 6
+    
+    # Theta is therefore s/r, but since the create.circle() function takes an
+    # angle in radians/pi, this must be divided out as well
+    theta = (s / r) / np.pi
+    
+    # Since the circle must extend theta radians past +/-pi/2, theta must be
+    # added/subtracted from 1/2 accordingly
+    start_angle = (-1/2) - theta
+    end_angle = (1/2) + theta
+    
     # The free-throw circle is 6' in diameter from the center of the free-throw
     # line (exterior)
     free_throw_circle_solid = create.circle(
         center = (-28 - (1/12), 0),
-        start = -1/2,
-        end = 1/2,
+        start = start_angle,
+        end = end_angle,
         d = 12
-    ).append(
-        pd.DataFrame({
-            'x':[-28 - (1/12)],
-            'y':[6]
-        })
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = 1/2,
-            end = -1/2,
+            start = end_angle,
+            end = start_angle,
             d = 12 - (4/12)
         )
     ).append(
-        pd.DataFrame({
-            'x':[-28 - (1/12)],
-            'y':[-6]
-        })
+        create.circle(
+            center = (-28 - (1/12), 0),
+            start = start_angle,
+            end = end_angle,
+            d = 12
+        ).iloc[0]
     )
     
     # Reflect the x coordinates over the y axis
@@ -496,131 +514,113 @@ def free_throw_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
             rotation_dir
         )
     
-    # The dashed sections of the free-throw circle
+    # The dashed sections of the free-throw circle are all of length 15.5", and
+    # are spaced 15.5" from each other. Following a similar process as above,
+    # the starting and ending angles can be computed
+    
+    # First, compute the arc length in feet
+    s = 15.5 / 12
+    
+    # The outer radius is 6'
+    r = 6
+    
+    # Finally, compute the angle traced by the dashed lines
+    theta_dashes = (s / r) / np.pi
+    
+    # This theta must be added to start_angle above to get the starting angle
+    # for each dash, and added twice to get the ending angle for each dash.
+    # This pattern can be repeated, taking the end angle of the previous dash
+    # as the start angle for the following dash
+    dash_1_start_angle = start_angle - theta_dashes
+    dash_1_end_angle = start_angle - (2 * theta_dashes)
+    
+    dash_2_start_angle = dash_1_end_angle - theta_dashes
+    dash_2_end_angle = dash_1_end_angle - (2 * theta_dashes)
+    
+    dash_3_start_angle = dash_2_end_angle - theta_dashes
+    dash_3_end_angle = dash_2_end_angle - (2 * theta_dashes)
+    
     free_throw_circle_dash_1 = create.circle(
         center = (-28 - (1/12), 0),
-        start = (1/2) + (((12.29/72) + (15.5/72)) / np.pi),
-        end = (1/2) + (((12.29/72) + (31/72)) / np.pi),
+        start = dash_1_start_angle,
+        end = dash_1_end_angle,
         d = 12
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.29/72) + (31/72)) / np.pi),
-            end = (1/2) + (((12.29/72) + (15.5/72)) / np.pi),
+            start = dash_1_end_angle,
+            end = dash_1_start_angle,
             d = 12 - (4/12)
         )
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.29/72) + (15.5/72)) / np.pi),
-            end = (1/2) + (((12.29/72) + (31/72)) / np.pi),
+            start = dash_1_start_angle,
+            end = dash_1_end_angle,
             d = 12
         ).iloc[0]
     )
     
     free_throw_circle_dash_2 = create.circle(
         center = (-28 - (1/12), 0),
-        start = (1/2) + (((12.29/72) + (46.5/72)) / np.pi),
-        end = (1/2) + (((12.20/72) + (62/72)) / np.pi),
+        start = dash_2_start_angle,
+        end = dash_2_end_angle,
         d = 12
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.20/72) + (62/72)) / np.pi),
-            end = (1/2) + (((12.29/72) + (46.5/72)) / np.pi),
+            start = dash_2_end_angle,
+            end = dash_2_start_angle,
             d = 12 - (4/12)
         )
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.29/72) + (46.5/72)) / np.pi),
-            end = (1/2) + (((12.20/72) + (62/72)) / np.pi),
+            start = dash_2_start_angle,
+            end = dash_2_end_angle,
             d = 12
         ).iloc[0]
     )
         
     free_throw_circle_dash_3 = create.circle(
-            center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.29/72) + (77.5/72)) / np.pi),
-            end = (1/2) + (((12.20/72) + (93/72)) / np.pi),
-            d = 12
-    ).append(
-        create.circle(
-            center = (-28 - (1/12), 0),
-            start = (1/2) + (((12.20/72) + (93/72)) / np.pi),
-            end = (1/2) + (((12.29/72) + (77.5/72)) / np.pi),
-            d = 12 - (4/12)
-        )
-    ).append(
-        create.circle(
-                center = (-28 - (1/12), 0),
-                start = (1/2) + (((12.29/72) + (77.5/72)) / np.pi),
-                end = (1/2) + (((12.20/72) + (93/72)) / np.pi),
-                d = 12
-        ).iloc[0]
-    )
-        
-    free_throw_circle_dash_4 = create.circle(
-            center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.29/72) + (77.5/72)) / np.pi),
-            end = (-1/2) - (((12.20/72) + (93/72)) / np.pi),
-            d = 12
-    ).append(
-        create.circle(
-            center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.20/72) + (93/72)) / np.pi),
-            end = (-1/2) - (((12.29/72) + (77.5/72)) / np.pi),
-            d = 12 - (4/12)
-        )
-    ).append(
-        create.circle(
-            center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.29/72) + (77.5/72)) / np.pi),
-            end = (-1/2) - (((12.20/72) + (93/72)) / np.pi),
-            d = 12
-        ).iloc[0]
-    )
-        
-    free_throw_circle_dash_5 = create.circle(
         center = (-28 - (1/12), 0),
-        start = (-1/2) - (((12.29/72) + (46.5/72)) / np.pi),
-        end = (-1/2) - (((12.20/72) + (62/72)) / np.pi),
+        start = dash_3_start_angle,
+        end = dash_3_end_angle,
         d = 12
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.20/72) + (62/72)) / np.pi),
-            end = (-1/2) - (((12.29/72) + (46.5/72)) / np.pi),
+            start = dash_3_end_angle,
+            end = dash_3_start_angle,
             d = 12 - (4/12)
         )
     ).append(
         create.circle(
             center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.29/72) + (46.5/72)) / np.pi),
-            end = (-1/2) - (((12.20/72) + (62/72)) / np.pi),
+            start = dash_3_start_angle,
+            end = dash_3_end_angle,
             d = 12
         ).iloc[0]
     )
     
-    free_throw_circle_dash_6 = create.circle(
-        center = (-28 - (1/12), 0),
-        start = (-1/2) - (((12.29/72) + (15.5/72)) / np.pi),
-        end = (-1/2) - (((12.29/72) + (31/72)) / np.pi),
-        d = 12
-    ).append(
-        create.circle(
-            center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.29/72) + (31/72)) / np.pi),
-            end = (-1/2) - (((12.29/72) + (15.5/72)) / np.pi),
-            d = 12 - (4/12)
-        )
-    ).append(
-        create.circle(
-            center = (-28 - (1/12), 0),
-            start = (-1/2) - (((12.29/72) + (15.5/72)) / np.pi),
-            end = (-1/2) - (((12.29/72) + (31/72)) / np.pi),
-            d = 12
-        ).iloc[0]
+    # The remaining dashes are just the reflections of dashes 1, 2, and 3 over
+    # the x axis
+    free_throw_circle_dash_4 = transform.reflect(
+        free_throw_circle_dash_3,
+        over_x = True,
+        over_y = False
+    )
+        
+    free_throw_circle_dash_5 = transform.reflect(
+        free_throw_circle_dash_2,
+        over_x = True,
+        over_y = False
+    )
+    
+    free_throw_circle_dash_6 = transform.reflect(
+        free_throw_circle_dash_1,
+        over_x = True,
+        over_y = False
     )
         
     # Reflect the x coordinates over the y axis
