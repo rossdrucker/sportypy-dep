@@ -134,23 +134,23 @@ def diamond(height, width, center = (0, 0)):
     diamond_pts: A pandas dataframe that contains the diamond's bounding box
         coordinates
     """
-    # A square's bounding box is described by going along the following path
+    # A diamond's bounding box is described by going along the following path
     diamond_pts = pd.DataFrame({
         'x': [
-            center[0] - side_length/2,
-            center[0] + side_length/2,
-            center[0] + side_length/2,
-            center[0] - side_length/2,
-            center[0] - side_length/2
+            center[0] - width/2,
+            center[0],
+            center[0] + width/2,
+            center[0],
+            center[0] - width/2
         ],
         
         'y': [
-            center[0] - side_length/2,
-            center[0] - side_length/2,
-            center[0] + side_length/2,
-            center[0] + side_length/2,
-            center[0] - side_length/2,
+            center[1],
+            center[1] - height/2,
+            center[1],
+            center[1] + height/2,
+            center[1]
         ]
     })
     
-    return square_pts
+    return diamond_pts
