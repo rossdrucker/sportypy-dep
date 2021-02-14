@@ -109,6 +109,42 @@ def square(side_length, center = (0, 0)):
         ],
         
         'y': [
+            center[1] - side_length/2,
+            center[1] - side_length/2,
+            center[1] + side_length/2,
+            center[1] + side_length/2,
+            center[1] - side_length/2,
+        ]
+    })
+    
+    return square_pts
+
+def diamond(height, width, center = (0, 0)):
+    """
+    Generate a bound box for a diamond
+    
+    Parameters
+    ----------
+    height: the vertical height of the diamond
+    width: the horizontal width of the diamond
+    center: where to center the diamond
+    
+    Returns
+    -------
+    diamond_pts: A pandas dataframe that contains the diamond's bounding box
+        coordinates
+    """
+    # A square's bounding box is described by going along the following path
+    diamond_pts = pd.DataFrame({
+        'x': [
+            center[0] - side_length/2,
+            center[0] + side_length/2,
+            center[0] + side_length/2,
+            center[0] - side_length/2,
+            center[0] - side_length/2
+        ],
+        
+        'y': [
             center[0] - side_length/2,
             center[0] - side_length/2,
             center[0] + side_length/2,
