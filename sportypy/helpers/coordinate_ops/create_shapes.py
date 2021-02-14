@@ -63,8 +63,7 @@ def rectangle(x_min, x_max, y_min, y_max):
     rect_pts: A pandas dataframe that contains the rectangle's bounding box
         coordinates
     """
-    # A rectangle's bounding box is described by starting going along the
-    # following path
+    # A rectangle's bounding box is described by going along the following path
     rect_pts = pd.DataFrame({
         'x': [
             x_min,
@@ -84,3 +83,38 @@ def rectangle(x_min, x_max, y_min, y_max):
     })
     
     return rect_pts
+
+def square(side_length, center = (0, 0)):
+    """
+    Generate a bound box for a square
+    
+    Parameters
+    ----------
+    side_length: an integer length of the side of the square
+    center: where to center the square
+    
+    Returns
+    -------
+    square_pts: A pandas dataframe that contains the square's bounding box
+        coordinates
+    """
+    # A square's bounding box is described by going along the following path
+    square_pts = pd.DataFrame({
+        'x': [
+            center[0] - side_length/2,
+            center[0] + side_length/2,
+            center[0] + side_length/2,
+            center[0] - side_length/2,
+            center[0] - side_length/2
+        ],
+        
+        'y': [
+            center[0] - side_length/2,
+            center[0] - side_length/2,
+            center[0] + side_length/2,
+            center[0] + side_length/2,
+            center[0] - side_length/2,
+        ]
+    })
+    
+    return square_pts
