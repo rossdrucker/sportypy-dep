@@ -7,8 +7,8 @@ import math
 import numpy as np
 import pandas as pd
 
-from helpers.coordinate_ops import create_shapes as create
-from helpers.coordinate_ops import transformations as transform
+from sportypy.helpers.coordinate_ops import create_shapes as create
+from sportypy.helpers.coordinate_ops import transformations as transform
 
 def inner_center_circle(full_surf = True, rotate = False,
                         rotation_dir = 'ccw'):

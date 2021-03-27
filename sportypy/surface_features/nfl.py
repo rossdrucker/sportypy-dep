@@ -303,7 +303,7 @@ def yard_markings(full_surf = True, rotate = False, rotation_dir = 'ccw'):
             yard_line_dict[f'yard_line_{50 + yardage}'] = yard_line
             
         else:
-            # At 1-yard intervals , the line should be 2' long. The line should
+            # At 1-yard intervals, the line should be 2' long. The line should
             # appear at the bottom (b) and top (t) of the field inside the 6'
             # wide boundary, and also appear at 70'9" from the nearest boundary
             # and extending from this point towards that boundary (l and u)

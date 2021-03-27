@@ -7,8 +7,8 @@ import math
 import numpy as np
 import pandas as pd
 
-from helper.coordinate_ops import create_shapes as create
-from helper.coordinate_ops import transformations as transform
+from sportypy.helpers.coordinate_ops import create_shapes as create
+from sportypy.helpers.coordinate_ops import transformations as transform
 
 def center_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
@@ -27,7 +27,7 @@ def center_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     center_circle: A pandas dataframe containing the points that comprise the
         center circle of the court
     """
-    # Draw the right outer semicircle, then move in 2" per the NCAA's required
+    # Draw the left outer semicircle, then move in 2" per the NCAA's required
     # line thickness, and draw inner semicircle. Doing it this way alleviates
     # future fill issues.
     center_circle = create.circle(
@@ -106,8 +106,7 @@ def division_line(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     
     return division_line
 
-def endlines_sidelines(full_surf = True, rotate = False,
-                           rotation_dir = 'ccw'):
+def endline_sideline(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     end lines and sidelines as specified in Rule 1, Section 3, Article 2 of
@@ -167,8 +166,8 @@ def endlines_sidelines(full_surf = True, rotate = False,
     
     return endline_sideline
 
-def lower_defensive_box_ticks(full_surf = True, rotate = False,
-                              rotation_dir = 'ccw'):
+def lower_def_box_ticks(full_surf = True, rotate = False,
+                        rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     lower defensive box tick marks as specified in Rule 1, Section 3, Article 7
@@ -185,7 +184,8 @@ def lower_defensive_box_ticks(full_surf = True, rotate = False,
     
     Returns
     -------
-    endline_sideline: a pandas dataframe of the end lines and side lines
+    lower_defensive_box_tick: a pandas dataframe of the lower defensive box
+        tick marks
     """
     # The defensive box is marked by two 2"-thick tick marks, each being 3'
     # from the edge of the lane and extending 12" into the court
@@ -209,10 +209,10 @@ def lower_defensive_box_ticks(full_surf = True, rotate = False,
     
     return lower_defensive_box_tick
 
-def court_border(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def court_apron(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
-    court border as specified in the court diagram of the NCAA rule book
+    court apron as specified in the court diagram of the NCAA rule book
     
     Parameters
     ----------
@@ -223,12 +223,12 @@ def court_border(full_surf = True, rotate = False, rotation_dir = 'ccw'):
 
     Returns
     -------
-    court_border: a pandas dataframe of the court border
+    court_apron: a pandas dataframe of the court border
     """
     # Courts have borders around the outside of the court that are different
     # in color than the end lines and sidelines. They are usually about 5' on
     # the sidelines and 8' on the end lines
-    court_border = pd.DataFrame({
+    court_apron = pd.DataFrame({
         'x': [
             0,
             -47 - (2/12),
@@ -256,21 +256,20 @@ def court_border(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     
     # Reflect the x coordinates over the y axis
     if full_surf:
-        court_border = court_border.append(
-            transform.reflect(court_border, over_y = True)
+        court_apron = court_apron.append(
+            transform.reflect(court_apron, over_y = True)
         )
     
     # Rotate the coordinates if necessary
     if rotate:
-        court_border = transform.rotate(
-            court_border,
+        court_apron = transform.rotate(
+            court_apron,
             rotation_dir
         )
     
-    return court_border
+    return court_apron
 
-def coaching_boxes(full_surf = True, rotate = False,
-                   rotation_dir = 'ccw'):
+def coaching_box(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     coaching boxes as specified in Rule 1, Section 9, Articles 1 and 2 of the
@@ -310,7 +309,7 @@ def coaching_boxes(full_surf = True, rotate = False,
     
     return coaching_box
 
-def bench_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def bench_area(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the team bench areas
     as specified on the court diagram in the NCAA rule book
@@ -347,8 +346,7 @@ def bench_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     
     return bench_area
 
-def free_throw_lanes(full_surf = True, rotate = False,
-                     rotation_dir = 'ccw'):
+def free_throw_lane(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     free throw lane as specified in Rule 1, Section 6, Articles 1, 2, 3, and 4
@@ -364,7 +362,6 @@ def free_throw_lanes(full_surf = True, rotate = False,
     Returns
     -------
     free_throw_lanes: a pandas dataframe of the free throw lanes
-    painted_areas: a pandas dataframe of the painted areas
     """
     # The free throw lane goes from the endline inwards a distance of 18' 10"
     # (interior) and 19' (exterior) with a width of 6'
@@ -382,132 +379,12 @@ def free_throw_lanes(full_surf = True, rotate = False,
     # measure 2" in width
     free_throw_lane = pd.DataFrame({
         'x': [
-            # Start
-            -47,
-            
-            # First block lower
-            -40,
-            -40,
-            -39,
-            -39,
-            
-            # Second block lower
-            -36,
-            -36,
-            -36 + (2/12),
-            -36 + (2/12),
-            
-            # Third block lower
-            -33 + (2/12),
-            -33 + (2/12),
-            -33 + (4/12),
-            -33 + (4/12),
-            
-            # Fourth block lower
-            -30 + (4/12),
-            -30 + (4/12),
-            -30 + (6/12),
-            -30 + (6/12),
-            
-            # End
-            -28,
-            
-            # Cross
-            -28,
-            
-            # Fourth block upper
-            -30 + (6/12),
-            -30 + (6/12),
-            -30 + (4/12),
-            -30 + (4/12),
-            
-            # Third block upper
-            -33 + (2/12),
-            -33 + (2/12),
-            -33 + (4/12),
-            -33 + (4/12),
-            
-            # Second block upper
-            -36,
-            -36,
-            -36 + (2/12),
-            -36 + (2/12),
-            
-            # First block upper
-            -40,
-            -40,
-            -39,
-            -39,
-            
-            # End of exterior
-            -47,
-            
-            # Interior
-            -47, -28 - (2/12), -28 - (2/12), -47, -47, -47
+            -47, -28, -28, -47, -47, -28 - (2/12), -28 - (2/12), -47, -47, -47
         ],
         
         'y': [
-            -6,
-            
-            # First block lower
-            -6,
-            -6 - (8/12),
-            -6 - (8/12),
-            -6,
-            
-            # Second block lower
-            -6,
-            -6 - (8/12),
-            -6 - (8/12),
-            -6,
-            
-            # Third block lower
-            -6,
-            -6 - (8/12),
-            -6 - (8/12),
-            -6,
-            
-            # Fourth block lower
-            -6,
-            -6 - (8/12),
-            -6 - (8/12),
-            -6,
-            
-            # End
-            -6,
-            
-            # Cross
-            6,
-            
-            # Fourth block upper
-            6,
-            6 + (8/12),
-            6 + (8/12),
-            6,
-            
-            # Third block upper
-            6,
-            6 + (8/12),
-            6 + (8/12),
-            6,
-            
-            # Second block upper
-            6,
-            6 + (8/12),
-            6 + (8/12),
-            6,
-            
-             # First block upper
-            6,
-            6 + (8/12),
-            6 + (8/12),
-            6,
-            
-            # End of exterior
-            6,
-            
-            # Interior
-            6 - (2/12), 6 - (2/12), -6 + (2/12), -6 + (2/12), 6, -6
+            -6, -6, 6, 6, 6 - (2/12), 6 - (2/12), -6 + (2/12), -6 + (2/12),
+            6, -6
         ]
     })
     
@@ -526,7 +403,165 @@ def free_throw_lanes(full_surf = True, rotate = False,
     
     return free_throw_lane
 
-def painted_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def blocks(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+    """
+    Generate the dataframes for the points that comprise the blocks as
+    specified in page 8 of the NBA rule book
+    
+    Parameters
+    ----------
+    full_surf: a bool indicating whether or not this feature is needed for a
+        full-surface representation
+    rotate: a bool indicating whether or not this feature needs to be rotated
+    rotation_dir: a string indicating which direction to rotate the feature
+
+    Returns
+    -------
+    blocks_dict: a dictionary with the block numbers as keys and the dataframes
+        to use for plotting as values
+    """
+    # The first set of blocks are 7' from the interior of the baseline, and
+    # measure 1' in width
+    block_1 = create.rectangle(
+        x_min = -40, x_max = -39,
+        y_min = -6, y_max = -6 - (8/12),
+    )
+    
+    # The second set of blocks are 3' from the first block, and
+    # measure 2" in width
+    block_2 = create.rectangle(
+        x_min = -36, x_max = -36 + (2/12),
+        y_min = -6, y_max = -6 - (8/12)
+    )
+    
+    # The third set of blocks are 3' from the second block, and
+    # measure 2" in width
+    block_3 = create.rectangle(
+        x_min = -33 + (2/12), x_max = -33 + (4/12),
+        y_min = -6, y_max = -6 - (8/12)
+    )
+    
+    # The fourth set of blocks are 3' from the third block, and
+    # measure 2" in width
+    block_4 = create.rectangle(
+        x_min = -30 + (4/12), x_max = -30 + (6/12),
+        y_min = -6, y_max = -6 - (8/12)
+    )
+    
+    # Block 1 but on the other side of the free-throw lane
+    block_5 = create.rectangle(
+        x_min = -40, x_max = -39,
+        y_min = 6, y_max = 6 + (8/12)
+    )
+    
+    # Block 2 but on the other side of the free-throw lane
+    block_6 = create.rectangle(
+        x_min = -36, x_max = -36 + (2/12),
+        y_min = 6, y_max = 6 + (8/12)
+    )
+    
+    # Block 3 but on the other side of the free-throw lane
+    block_7 = create.rectangle(
+        x_min = -33 + (2/12), x_max = -33 + (4/12),
+        y_min = 6, y_max = 6 + (8/12)
+    )
+    
+    # Block 4 but on the other side of the free-throw lane
+    block_8 = create.rectangle(
+        x_min = -30 + (4/12), x_max = -30 + (6/12),
+        y_min = 6, y_max = 6 + (8/12)
+    )
+    
+    # Reflect the x coordinates over the y axis
+    if full_surf:
+        block_1 = block_1.append(
+            transform.reflect(block_1, over_y = True)
+        )
+        
+        block_2 = block_2.append(
+            transform.reflect(block_2, over_y = True)
+        )
+        
+        block_3 = block_3.append(
+            transform.reflect(block_3, over_y = True)
+        )
+        
+        block_4 = block_4.append(
+            transform.reflect(block_4, over_y = True)
+        )
+        
+        block_5 = block_5.append(
+            transform.reflect(block_5, over_y = True)
+        )
+        
+        block_6 = block_6.append(
+            transform.reflect(block_6, over_y = True)
+        )
+        
+        block_7 = block_7.append(
+            transform.reflect(block_7, over_y = True)
+        )
+        
+        block_8 = block_8.append(
+            transform.reflect(block_8, over_y = True)
+        )
+    
+    # Rotate the coordinates if necessary
+    if rotate:
+        block_1 = transform.rotate(
+            block_1,
+            rotation_dir
+        )
+        
+        block_2 = transform.rotate(
+            block_2,
+            rotation_dir
+        )
+        
+        block_3 = transform.rotate(
+            block_3,
+            rotation_dir
+        )
+        
+        block_4 = transform.rotate(
+            block_4,
+            rotation_dir
+        )
+        
+        block_5 = transform.rotate(
+            block_5,
+            rotation_dir
+        )
+        
+        block_6 = transform.rotate(
+            block_6,
+            rotation_dir
+        )
+        
+        block_7 = transform.rotate(
+            block_7,
+            rotation_dir
+        )
+        
+        block_8 = transform.rotate(
+            block_8,
+            rotation_dir
+        )
+        
+    blocks_dict = {
+        'block_1': block_1,
+        'block_2': block_2,
+        'block_3': block_3,
+        'block_4': block_4,
+        'block_5': block_5,
+        'block_6': block_6,
+        'block_7': block_7,
+        'block_8': block_8,
+    }
+    
+    return blocks_dict
+    
+def painted_area(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the bounding box of the
     free throw lane as specified in Rule 1, Section 6, Articles 1, 2, 3, and 4
@@ -547,7 +582,7 @@ def painted_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     # can be a different color than the markings and court. These coordinates
     # can be used to color them on the plot
     painted_area = create.rectangle(
-        x_min = -47, xmax = -28 - (2/12),
+        x_min = -47, x_max = -28 - (2/12),
         y_min = -6 + (2/12), y_max = 6 - (2/12)
     )
     
@@ -566,8 +601,8 @@ def painted_areas(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     
     return painted_area
     
-def restricted_area_arcs(full_surf = True, rotate = False,
-                         rotation_dir = 'ccw'):
+def restricted_area_arc(full_surf = True, rotate = False,
+                        rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the restricted-area
     arcs as specified in Rule 1, Section 8 of the NCAA rule book
@@ -630,8 +665,7 @@ def restricted_area_arcs(full_surf = True, rotate = False,
         
     return restricted_area_arc
     
-def m_three_pt_lines(full_surf = True, rotate = False,
-                     rotation_dir = 'ccw'):
+def m_three_pt_line(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the three-point line
     as specified in Rule 1, Section 7 of the NCAA rule book. These points are
@@ -652,40 +686,41 @@ def m_three_pt_lines(full_surf = True, rotate = False,
     # First, a bit of math is needed to determine the starting and ending
     # angles of the three-point arc, relative to 0 radians. Since in the end,
     # the angle is what matters, the units of measure do not. Inches are easier
-    # to use for this calculation. The angle begins 9' 10 3/8" from the
-    # interior edge of the endline
-    start_x = (9 * 12) + 10 + (3/8)
+    # to use for this calculation. The angle begins 40 1/8" from the
+    # interior edge of the sideline
+    start_y = (25 * 12) - (40 + (1/8))
     
-    # However, the rule book describes the arc as having a radius of 22' 1.75"
-    # from the center of the basket. The basket's center is 63" away from the
-    # interior of the endline, so this must be subtracted from our starting x
-    # position to get the starting x position *relative to the center of the
-    # basket*
-    start_x -= 63
+    # The rule book describes the arc as having a radius of 22' 1 3/4" from the
+    # center of the basket
     radius_outer = (22 * 12) + 1.75
     
     # From here, the calculation is relatively straightforward. To determine
-    # the angle, the inverse cosine is needed. It will be multiplied by pi
+    # the angle, the inverse sine is needed. It will be multiplied by pi
     # so that it can be passed to the create_circle() function
-    start_angle_outer = math.acos(start_x / radius_outer) / np.pi
+    start_angle_outer = -math.asin(start_y / radius_outer) / np.pi
     end_angle_outer = -start_angle_outer
     
     # The same method can be used for the inner angles, however, since the
-    # inner radius will be traced from bottom to top, the angle must be
+    # inner radius will be traced from top to bottom, the angle must be
     # negative to start
     radius_inner = (22 * 12) + 1.75 - 2
-    start_angle_inner = -math.acos(start_x / radius_inner) / np.pi
+    start_angle_inner = math.asin((start_y - 2) / radius_inner) / np.pi
     end_angle_inner = -start_angle_inner
     
     # According to the rulebook, the three-point line is 21' 7 7/8" in the
     # corners
     m_three_pt_line = pd.DataFrame({
-        'x': [-47],
-        'y': [21 + ((7 + (7/8))/12)]
+        'x': [
+            -47
+        ],
+        
+        'y': [
+            -25 + ((40 + (1/8)) / 12)
+        ]
     }).append(
         create.circle(
             center = (-41.75, 0),
-            d = 2 * (((22 * 12) + 1.75)/12),
+            d = 2 * (radius_outer / 12),
             start = start_angle_outer,
             end = end_angle_outer
         )
@@ -693,35 +728,31 @@ def m_three_pt_lines(full_surf = True, rotate = False,
         pd.DataFrame({
             'x': [
                 -47,
-                -47,
-                -47 + (((9 * 12) + 10 + (3/8))/12)
+                -47
             ],
             
             'y': [
-                -21 - ((7 + (7/8))/12),
-                -21 - ((7 + (7/8))/12) + (2/12),
-                -21 - ((7 + (7/8))/12) + (2/12)
+                25 - ((40 + (1/8)) / 12),
+                25 - ((42 + (1/8)) / 12)
             ]
         })
     ).append(
         create.circle(
             center = (-41.75, 0),
-            d = 2 * ((((22 * 12) + 1.75)/12) - (2/12)),
+            d = 2 * (radius_inner / 12),
             start = start_angle_inner,
             end = end_angle_inner
         )
     ).append(
         pd.DataFrame({
             'x': [
-                -47 + (((9 * 12) + 10 + (3/8))/12),
                 -47,
                 -47
             ],
             
             'y': [
-                21 + ((7 + (7/8))/12) - (2/12),
-                21 + ((7 + (7/8))/12) - (2/12),
-                21 + ((7 + (7/8))/12)
+                -25 + ((42 + (1/8)) / 12),
+                -25 + ((40 + (1/8)) / 12)
             ]
         })
     )
@@ -741,8 +772,7 @@ def m_three_pt_lines(full_surf = True, rotate = False,
     
     return m_three_pt_line
 
-def w_three_pt_lines(full_surf = True, rotate = False,
-                     rotation_dir = 'ccw'):
+def w_three_pt_line(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the three-point line
     as specified in Rule 1, Section 7 of the NCAA rule book. These points are
@@ -762,9 +792,9 @@ def w_three_pt_lines(full_surf = True, rotate = False,
     }).append(
         create.circle(
             center = (-41.75, 0),
-            d = 41.5,
             start = -1/2,
-            end = 1/2
+            end = 1/2,
+            d = 41.5
         )
     ).append(
         pd.DataFrame({
@@ -774,9 +804,9 @@ def w_three_pt_lines(full_surf = True, rotate = False,
     ).append(
         create.circle(
             center = (-41.75, 0),
-            d = 41.5 - (4/12),
             start = 1/2,
-            end = -1/2
+            end = -1/2,
+            d = 41.5 - (4/12)
         )
     ).append(
         pd.DataFrame({
@@ -800,8 +830,7 @@ def w_three_pt_lines(full_surf = True, rotate = False,
     
     return w_three_pt_line
 
-def free_throw_circles(full_surf = True, rotate = False,
-                       rotation_dir = 'ccw'):
+def free_throw_circle(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the free-throw circles
     as specified on the court diagram in the NCAA rule book
@@ -820,25 +849,25 @@ def free_throw_circles(full_surf = True, rotate = False,
     # The free-throw circle is 6' in diameter from the center of the free-throw
     # line (exterior)
     free_throw_circle = create.circle(
-        center = (-28, 0),
+        center = (-28 - (1/12), 0),
         start = -1/2,
         end = 1/2,
         d = 12
     ).append(
         pd.DataFrame({
-            'x':[-28],
+            'x':[-28 - (1/12)],
             'y':[6]
         })
     ).append(
         create.circle(
-            center = (-28, 0),
+            center = (-28 - (1/12), 0),
             start = 1/2,
             end = -1/2,
             d = 12 - (4/12)
         )
     ).append(
         pd.DataFrame({
-            'x':[-28],
+            'x':[-28 - (1/12)],
             'y':[-6]
         })
     )
@@ -858,7 +887,7 @@ def free_throw_circles(full_surf = True, rotate = False,
     
     return free_throw_circle
 
-def backboards(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def backboard(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the backboard as
     specified in Rule 1, Section 10, Article 2 of the NCAA rule book
@@ -890,7 +919,7 @@ def backboards(full_surf = True, rotate = False, rotation_dir = 'ccw'):
         
     return backboard
 
-def goals(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def goal(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the goals as specified
     in Rule 1, Sections 14 and 15 of the NCAA rule book
@@ -963,7 +992,7 @@ def goals(full_surf = True, rotate = False, rotation_dir = 'ccw'):
         
     return goal
 
-def nets(full_surf = True, rotate = False, rotation_dir = 'ccw'):
+def net(full_surf = True, rotate = False, rotation_dir = 'ccw'):
     """
     Generate the dataframe for the points that comprise the rings as specified
     in Rule 1, Section 14, Article 2 of the NCAA rule book
