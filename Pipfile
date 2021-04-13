@@ -13,6 +13,12 @@ bs4 = "*"
 pypyodbc = "*"
 jellyfish = "*"
 sqlalchemy = "*"
+matplotlib = "*"
+pytest = "*"
+pytest-cov = "*"
+tox = "*"
+pydocstyle = "*"
+pycodestyle = "*"
 
 [requires]
 python_version = "3.8"
