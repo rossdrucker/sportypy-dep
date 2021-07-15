@@ -169,6 +169,7 @@ class HockeyRink(BaseSurfacePlot):
 
         # Initialize the standard colors of the rink
         standard_colors = {
+            'plot_background': '#ffffff',
             'boards': '#000000',
             'ozone_ice': '#ffffff',
             'nzone_ice': '#ffffff',
@@ -933,6 +934,7 @@ class HockeyRink(BaseSurfacePlot):
         # If an Axes object is not provided, create one to use for plotting
         if ax is None:
             fig, ax = plt.subplots()
+            fig.patch.set_facecolor(self.feature_colors['plot_background'])
             fig.set_size_inches(50, 50)
             ax = plt.gca()
 
