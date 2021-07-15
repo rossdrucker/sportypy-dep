@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+autopep8 = "*"
 
 [packages]
 numpy = "*"
@@ -19,6 +20,7 @@ pytest-cov = "*"
 tox = "*"
 pydocstyle = "*"
 pycodestyle = "*"
+urllib3 = "*"
 
 [requires]
 python_version = "3.8"
