@@ -8,3 +8,5 @@ eggs/
 *.egg
 .tox/
 .pytest_cache/
+.coverage
+.vscode/
