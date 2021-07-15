@@ -1,1 +1,0 @@
-import sportypy.helpers.coordinate_ops
