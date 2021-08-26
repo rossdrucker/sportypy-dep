@@ -979,7 +979,7 @@ class BasketballCourt(BaseSurfacePlot):
         # If an x limit is provided, try to use it
         else:
             try:
-                xlim = (xlim[0] - self.x_shift, xlim[1] - self.x_shift)
+                xlim = (xlim[0] - self.x_trans, xlim[1] - self.x_trans)
 
             # If the limit provided is not a tuple, use the provided value as
             # best as possible. This will set the provided value as the lower
@@ -987,7 +987,7 @@ class BasketballCourt(BaseSurfacePlot):
             except TypeError:
                 # Apply the necessary shift to align the plot limit with the
                 # data
-                xlim = xlim - self.x_shift
+                xlim = xlim - self.x_trans
 
                 # If the provided value for the x limit is beyond the end of
                 # the boards, display the entire court
@@ -1040,10 +1040,10 @@ class BasketballCourt(BaseSurfacePlot):
         # Otherwise, repeat the process above but for y
         else:
             try:
-                ylim = (ylim[0] - self.y_shift, ylim[1] - self.y_shift)
+                ylim = (ylim[0] - self.y_trans, ylim[1] - self.y_trans)
 
             except TypeError:
-                ylim = ylim - self.y_shift
+                ylim = ylim - self.y_trans
 
                 if ylim >= half_court_width:
                     ylim = -half_court_width
