@@ -13,8 +13,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
 
+
 class BaseFeature(ABC):
-    """A base class for features on any surface, regardless of the sport it is
+    """A base class for features on any surface.
+
+    This class is for all features of a surface, regardless of the sport it is
     used for.
 
     Attributes
@@ -23,22 +26,22 @@ class BaseFeature(ABC):
         The dataframe containing the coordinates necessary to draw the feature
 
     x_anchor : float (default: 0.0)
-        The x coordinate corresponding to the feature's anchored position in the
-        surface's coordinate system
+        The x coordinate corresponding to the feature's anchored position in
+        the surface's coordinate system
 
     y_anchor : float (default: 0.0)
-        The y coordinate corresponding to the feature's anchored position in the
-        surface's coordinate system
+        The y coordinate corresponding to the feature's anchored position in
+        the surface's coordinate system
 
     x_justify : str (default: 'center')
-        The position of the x anchor relative to the rest of the feature. Viable
-        options are 'center', 'left_edge', or 'right_edge'. This will be used to
-        anchor the feature to its given location
-    
+        The position of the x anchor relative to the rest of the feature.
+        Viable options are 'center', 'left_edge', or 'right_edge'. This will be
+        used to anchor the feature to its given location
+
     y_justify : str (default: 'center')
-        The position of the y anchor relative to the rest of the feature. Viable
-        options are 'center', 'top', or 'bottom'. This will be used to anchor
-        the feature to its given location
+        The position of the y anchor relative to the rest of the feature.
+        Viable options are 'center', 'top', or 'bottom'. This will be used to
+        anchor the feature to its given location
 
     reflected_over_x : bool (default: False)
         Whether or not the feature should be reflected over the x axis
@@ -52,12 +55,13 @@ class BaseFeature(ABC):
     plot_kwargs : dict
         Additional arguments the feature requires to be plotted
     """
+
     def __init__(self, feature_df = pd.DataFrame(), x_anchor = 0.0,
                  y_anchor = 0.0, x_justify = 'center', y_justify = 'center',
                  reflect_x = False, reflect_y = True, is_constrained = True,
                  visible = True, **plot_kwargs):
         """Initialize the attributes of the class.
-        
+
         The attributes for features will be provided in the feature's
         construction parameter dictionary
         """
@@ -90,10 +94,12 @@ class BaseFeature(ABC):
 
     @abstractmethod
     def _get_centered_feature(self):
-        """Abstract method that returns the x and y coordinates that are needed
+        """Determine the feature's position if it were centered at (0, 0).
+
+        Abstract method that returns the x and y coordinates that are needed
         to create a Polygon for a specific feature if it were to be centered at
-        (0, 0) in the coordinate system. This method is created individually for
-        each feature in its constructor.
+        (0, 0) in the coordinate system. This method is created individually
+        for each feature in its constructor.
 
         Returns
         -------
@@ -104,7 +110,9 @@ class BaseFeature(ABC):
         pass
 
     def _translate_feature(self):
-        """Return a pandas data frame of the x and y coordinates necessary for
+        """Translate the feature to the proper (x, y) location on the surface.
+
+        Return a pandas data frame of the x and y coordinates necessary for
         plotting the feature in the correct location on the surface.
 
         Parameters
@@ -118,9 +126,9 @@ class BaseFeature(ABC):
             The data frame containing the feature's x and y coordinates in the
             correct location on the surface.
         """
-        # Start by getting the coordinates of the feature as if it were centered
-        # around the point (0, 0) through using the _get_centered_feature()
-        # method
+        # Start by getting the coordinates of the feature as if it were
+        # centered around the point (0, 0) through using the
+        # _get_centered_feature() method
         feature_df = self._get_centered_feature()
 
         # Then, reflect and shift all values as appropriate
@@ -128,9 +136,9 @@ class BaseFeature(ABC):
         feature_df['y'] = (feature_df['y'] * self.y_reflection) + self.y_anchor
 
         return feature_df
-    
+
     def create_feature_mpl_polygon(self):
-        """Generate the matplotlib.Polygon object that will display the feature.
+        """Generate a matplotlib.Polygon object that will display the feature.
 
         Parameters
         ----------
@@ -169,8 +177,8 @@ class BaseFeature(ABC):
             The (x, y) coordinates of the center of the circle
 
         npoints : int (default: 1000)
-            The number of points with which to create the circle. This will also
-            be the length of the resulting data frame
+            The number of points with which to create the circle. This will
+            also be the length of the resulting data frame
 
         r : float (default: 1.0)
             Radius of the circle IN THE UNITS OF THE SURFACE
@@ -186,8 +194,8 @@ class BaseFeature(ABC):
         Returns
         -------
         circle_pts : pandas.DataFrame
-            A pandas data frame containing the necessary x and y coordinates for
-            a circle
+            A pandas data frame containing the necessary x and y coordinates
+            for a circle
         """
         # Create a vector of numbers that are evenly spaced apart between the
         # starting and ending angles. They should be multiplied by pi to be in
@@ -233,8 +241,8 @@ class BaseFeature(ABC):
         Returns
         -------
         rect_pts : pandas.DataFrame
-            A pandas data frame containing the necessary x and y coordinates for
-            a rectangle
+            A pandas data frame containing the necessary x and y coordinates
+            for a rectangle
         """
         # A rectangle's bounding box is described by going along the following
         # path:
@@ -283,8 +291,8 @@ class BaseFeature(ABC):
         Returns
         -------
         square_pts : pandas.DataFrame
-            A pandas data frame containing the necessary x and y coordinates for
-            a square
+            A pandas data frame containing the necessary x and y coordinates
+            for a square
         """
         # A unit square centered at (0, 0) can have its boundary described as
         # the path traced by the following:
@@ -294,7 +302,7 @@ class BaseFeature(ABC):
         # (-0.5,  0.5)
         # (-0.5, -0.5)
         #
-        # This is the same path that a generated square will follow, with the 
+        # This is the same path that a generated square will follow, with the
         # side lengths variable
         square_pts = pd.DataFrame({
             'x': [
@@ -315,7 +323,7 @@ class BaseFeature(ABC):
         })
 
         return square_pts
-    
+
     @staticmethod
     def create_diamond(height = 0.0, width = 0.0, center = (0.0, 0.0)):
         """Generate a bound box for a diamond.
@@ -337,8 +345,8 @@ class BaseFeature(ABC):
         Returns
         -------
         diamond_pts : pandas.DataFrame
-            A pandas data frame containing the necessary x and y coordinates for
-            a diamond
+            A pandas data frame containing the necessary x and y coordinates
+            for a diamond
         """
         # A unit diamond's bounding box is described by going along the
         # following path:
@@ -347,7 +355,7 @@ class BaseFeature(ABC):
         # ( 0.5,  0.0)
         # ( 0.0, -0.5)
         # (-0.5,  0.0)
-        # 
+        #
         # This is the path that a diamond feature will also trace, with the
         # appropriate height and width
         diamond_pts = pd.DataFrame({
@@ -377,7 +385,7 @@ class BaseFeature(ABC):
         ----------
         ax : matplotlib.Axes
             Axes onto which the feature should be drawn
-        
+
         transform : matplotlib.Transform or None (default: None)
 
         Returns
@@ -389,7 +397,7 @@ class BaseFeature(ABC):
         # Set the transformation to be data coordinates if none is passed
         if not transform:
             transform = ax.transData
-        
+
         # Get the feature's matplotlib.Polygon
         patch = self.create_feature_mpl_polygon()
 

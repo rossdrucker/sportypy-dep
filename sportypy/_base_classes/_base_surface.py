@@ -8,8 +8,10 @@ import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
 
 class BaseSurface(ABC):
-    """Abstract base class for plotting any sports surface. This class is not
-    meant to be used directly, as it will be extended by each sport.
+    """Abstract base class for plotting any sports surface.
+
+    This class is not meant to be used directly, as it will be extended by each
+    sport.
 
     Attributes
     ----------
@@ -60,6 +62,7 @@ class BaseSurface(ABC):
         description of what each display range corresponds to. This will be
         created by the surface class' _get_display_ranges_dict() method
     """
+
     def __init__(self):
         # Initialize the values needed to shift the surface from having its
         # center at (0, 0)
@@ -221,9 +224,11 @@ class BaseSurface(ABC):
         return transform
     
     def convert_xy(self, x, y):
-        """Convert the x and y coordinates to the proper position and scale used
-        for the final surface plot
-        
+        """Reposition and scale the x and y coordinates.
+
+        The x and y coordinates must be moved to the proper position and
+        rescaled to the size used for the final surface plot.
+
         Parameters
         ----------
         x : float
@@ -258,9 +263,11 @@ class BaseSurface(ABC):
 
     @abstractmethod
     def _get_plot_range_limits(self):
-        """Abstract method that sets the displayable range of the resulting
-        plot. This method is created individually for each sport in its
-        respective surface class
+        """Set the displayable range of the resulting plot.
+        
+        This is an abstract method that sets the displayable range of the
+        resulting plot. This method is created individually for each sport in
+        its respective surface class
 
         Returns
         -------
