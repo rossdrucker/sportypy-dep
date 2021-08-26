@@ -6,7 +6,7 @@ This repository contains code necessary to draw scale versions of playing surfac
 
 To install `sportypy` via `pip`, please run
 
-```
+```bash
 pip install sportypy
 ```
 
@@ -14,7 +14,7 @@ pip install sportypy
 
 Totally customizable plots are possible by calling a class, then using the `.draw()` method of the class to create the plot. Here is an example:
 
-```
+```python
 from sportypy import NCAACourt
 NCAACourt(
     colors_dict = {
