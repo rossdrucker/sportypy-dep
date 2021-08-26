@@ -1,4 +1,9 @@
-"""
+"""Base surface plot class to extend scipy to sportypy.
+
+The BaseSurfacePlot class is an extension of the BaseSurface class that enables
+a user to seamlessly create an analytic plot on top of any surface. Any league
+or sport surface will be an inherit this class.
+
 @author: Ross Drucker
 """
 import numpy as np
@@ -6,24 +11,28 @@ from functools import wraps
 import matplotlib.pyplot as plt
 from sportypy._base_classes._base_surface import BaseSurface
 
+
 class BaseSurfacePlot(BaseSurface):
-    """Class that extends a basic surface to include the necessary methods for
+    """A plot of a sport's/league's surface.
+
+    Class that extends a basic surface to include the necessary methods for
     plotting its features, user-supplied data, heatmaps, hexbin plots, etc.
     """
-    def _validate_values(plot_function):
-        """Ensure that values passed to the plotting function are within the
-        boundaries of the final plot.
 
-        A point is considered "valid" if the point lies within the boundaries of
-        the surface or constraint. Those points that do not are not plotted and
-        are instead converted to be np.nan
+    def _validate_values(plot_function):
+        """Ensure values passed to the plotting function are constrained.
+
+        A point is considered "valid" if the point lies within the boundaries
+        of the surface or constraint. Those points that do not are not plotted
+        and are instead converted to be np.nan
 
         This is a decorator which will be used with plotting methods of this
         class.
 
-        This expects that x and y have already been converted to the right units
-        and shifted appropriately to be plotted
+        This expects that x and y have already been converted to the right
+        units and shifted appropriately to be plotted
         """
+
         @wraps(plot_function)
         def wrapper(self, x, y, *, values = None, plot_range = None,
                     plot_xlim = None, plot_ylim = None, **kwargs):
@@ -35,7 +44,7 @@ class BaseSurfacePlot(BaseSurface):
             # above
             if not values:
                 values = C
-            
+
             # Make a copy of the values so as not to overwrite the original
             # values
             values = self.copy_(values)
@@ -44,7 +53,7 @@ class BaseSurfacePlot(BaseSurface):
             # placeholders that is the same shape as the x and y values
             if not values:
                 values = np.ones(x.shape)
-            
+
             # Otherwise, use the actual values and flatten them (if necessary)
             # to a one-dimensional array
             else:
@@ -57,21 +66,22 @@ class BaseSurfacePlot(BaseSurface):
             # If x, y, and values are not symmetric in length, raise an error
             if len(x) != len(y) or len(x) != len(values):
                 raise Exception('x, y, and values must all be of same length')
-            
+
             if plot_range is None and plot_xlim is None and plot_ylim is None:
                 plot_xlim, plot_ylim = self._get_limits('full')
 
-            # Initialize the mask to be be false. The mask will indicate whether
-            # a point lies within the defined limits for the plot
+            # Initialize the mask to be be false. The mask will indicate
+            # whether a point lies within the defined limits for the plot
             mask = False
-            
+
             # If no plot_range is specified, and no x or y limitations are
             # imposed, set the plot limits to that of a full-surface plot
             if plot_range is None and plot_xlim is None and plot_ylim is None:
                 plot_xlim, plot_ylim = self._get_limits('full')
-            
-            # Otherwise, get the limits of the plot based on the supplied values
-            # and set the mask to identify points who are outside of its bounds
+
+            # Otherwise, get the limits of the plot based on the supplied
+            # values and set the mask to identify points who are outside of its
+            # bounds
             else:
                 plot_xlim, plot_ylim = self.get_limits(
                     plot_range,
@@ -82,16 +92,16 @@ class BaseSurfacePlot(BaseSurface):
                 # The mask finds points that are below the minimum allowable x
                 # and y values or above the maximum allowable x and y values
                 mask = (
-                    (x < plot_xlim[0]) | (x > plot_xlim[1])
-                    | (y < plot_ylim[0]) | (y > plot_ylim[1])
+                    (x < plot_xlim[0]) | (x > plot_xlim[1]) |
+                    (y < plot_ylim[0]) | (y > plot_ylim[1])
                 )
 
             # If the plot is constrained to exclude values outside its bounds,
-            # then values outside of the boundaries of the surface should be set
-            # to be nan
+            # then values outside of the boundaries of the surface should be
+            # set to be nan
             if kwargs.get('is_constrained', True):
                 values = self._outside_boundaries_to_nan(x, y, values)
-            
+
             # Create the final mask to exclude points that are outside the
             # boundary of the surface or are non-existent (nan)
             mask = mask | np.isnan(x) | np.isnan(y) | np.isnan(values)
@@ -112,16 +122,16 @@ class BaseSurfacePlot(BaseSurface):
                 plot_ylim = plot_ylim,
                 **kwargs
             )
-        
+
         return wrapper
 
     def _validate_plot(plot_function):
-        """Ensure that all parameters necessary to draw the plot are in the
-        correct form.
+        """Ensure correct for for all parameters necessary to draw the plot.
 
         This is a decorator which will be used with plotting methods of this
         class.
         """
+
         @wraps(plot_function)
         def wrapper(self, *args, **kwargs):
             # If no Axes object is passed as a keyword argument, create one to
@@ -162,5 +172,5 @@ class BaseSurfacePlot(BaseSurface):
         return wrapper
 
     def _constrain_plot(self, plot_features, ax, transform):
-        """Constrain the features"""
+        """Constrain the features."""
         pass
