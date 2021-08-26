@@ -266,11 +266,7 @@ class BaseSurface(ABC):
     @abstractmethod
     def _get_plot_range_limits(self):
         """Set the displayable range of the resulting plot.
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 7d334b7a333d7e9b4b79822cffadb7dfd422fb34
         This is an abstract method that sets the displayable range of the
         resulting plot. This method is created individually for each sport in
         its respective surface class
