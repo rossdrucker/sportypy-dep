@@ -1,4 +1,5 @@
-"""
+"""Configure the package.
+
 @author: Ross Drucker
 """
 import setuptools
