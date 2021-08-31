@@ -1,4 +1,4 @@
-"""Extension of the BaseSurfacePlot class to create a basketball.
+"""Extension of the BaseSurfacePlot class to create a basketball court.
 
 This is a second-level child class of the BaseSurface class, and as such will
 have access to its attributes and methods. The default court will be that of
