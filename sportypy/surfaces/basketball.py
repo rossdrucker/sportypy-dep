@@ -235,7 +235,7 @@ class BasketballCourt(BaseSurfacePlot):
         # Substitution Area
         self.substitution_area_length = substitution_area_length
 
-        # Create a container for the relevant features of an ice court
+        # Create a container for the relevant features of a basketball court
         self._features = []
 
         # Initialize the x and y limits for the plot to be None. These
@@ -814,7 +814,7 @@ class BasketballCourt(BaseSurfacePlot):
             The display range in the x direction to be used. If a single
             float is provided, this will be used as the lower bound of
             the x coordinates to display and the upper bound will be the
-            +x end of the boards. If a tuple, the two values will be
+            +x end of the court. If a tuple, the two values will be
             used to determine the bounds. If None, then the
             display_range will be used instead to set the bounds
 
@@ -866,9 +866,9 @@ class BasketballCourt(BaseSurfacePlot):
                 # visibility to be true by default
                 visible = True
 
-            # Assuming the feature is visible (and is not the boards), get
-            # the feature's x and y limits to ensure it lies within the
-            # bounds of the court
+            # Assuming the feature is visible (and is not the sideline or
+            # endline), get the feature's x and y limits to ensure it lies
+            # within the bounds of the court
             if visible and not isinstance(feature, basketball.CourtConstraint):
                 try:
                     feature_df = feature._translate_feature()
@@ -946,7 +946,7 @@ class BasketballCourt(BaseSurfacePlot):
         ylim = self.copy_(ylim)
 
         # Determine the length of half of the court (including the thickness of
-        # the boards)
+        # the court boundary)
         half_court_length = self.half_court_length +\
             self.baseline_apron_extension_length + 1.0
         half_court_width = self.half_court_width +\
@@ -990,7 +990,7 @@ class BasketballCourt(BaseSurfacePlot):
                 xlim = xlim - self.x_trans
 
                 # If the provided value for the x limit is beyond the end of
-                # the boards, display the entire court
+                # the court boundaries, display the entire court
                 if xlim >= half_court_length:
                     xlim = -half_court_length
 
