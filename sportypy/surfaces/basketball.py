@@ -1,3 +1,4 @@
+# pylint: disable=super-init-not-called
 """Extension of the BaseSurfacePlot class to create a basketball court.
 
 This is a second-level child class of the BaseSurface class, and as such will
@@ -807,8 +808,6 @@ class BasketballCourt(BaseSurfacePlot):
             will always be drawn under the hood, however this parameter
             limits what is shown in the final plot. The following explain what
             each display range corresponds to:
-
-
 
         xlim : float, tuple (float, float), or None (default: None)
             The display range in the x direction to be used. If a single
